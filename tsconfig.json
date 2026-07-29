@@ -11,6 +11,7 @@
 		"outDir": "./dist",
 		"rootDir": "./lib",
 		"strict": true,
+		"isolatedModules": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"moduleResolution": "nodenext",

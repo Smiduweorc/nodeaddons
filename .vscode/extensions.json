@@ -1,7 +1,6 @@
 {
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
-		"Gruntfuggly.todo-tree",
 		"llvm-vs-code-extensions.vscode-clangd",
 		"xaver.clang-format"
 	]

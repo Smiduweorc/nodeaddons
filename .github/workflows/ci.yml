@@ -49,26 +49,24 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Build (native addon + TypeScript)
-        run: npm run build
-
-      - name: Run tests
+      # `npm test` builds the native addon and TypeScript first.
+      - name: Build & test
         run: npm test
 
       - name: Check C++ formatting
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
+        if: matrix.os == 'ubuntu-latest'
         run: |
           find . \( -path ./node_modules -o -path ./build \) -prune -o \
             \( -name "*.cc" -o -name "*.cpp" -o -name "*.cxx" -o -name "*.h" -o -name "*.hpp" \) -print \
             | xargs --no-run-if-empty clang-format --dry-run --Werror
 
       - name: Generate API docs
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
+        if: matrix.os == 'ubuntu-latest'
         run: npm run docs
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
+        if: matrix.os == 'ubuntu-latest'
         with:
           name: dist
           path: |
