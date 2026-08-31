@@ -26,8 +26,12 @@ footer = """
 """
 
 [git]
+# The keys below that match git-cliff's current defaults are set explicitly on
+# purpose: a future git-cliff release changing a default cannot then silently
+# reshape the changelog.
 conventional_commits = true
 filter_unconventional = true
+split_commits = false
 commit_parsers = [
   { message = "^feat", group = "Features" },
   { message = "^fix", group = "Bug Fixes" },
@@ -43,5 +47,8 @@ commit_parsers = [
   { body = ".*security", group = "Security" },
   { message = "^revert", group = "Revert" },
 ]
+protect_breaking_commits = false
+filter_commits = false
 tag_pattern = "v[0-9]*"
+topo_order = false
 sort_commits = "oldest"
