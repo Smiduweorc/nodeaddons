@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 #
-# Usage: ./release.sh v[X.Y.Z]
+# Bumps the version in package.json, regenerates CHANGELOG.md from the commit
+# history, commits, and creates an annotated tag whose message is the changelog
+# for the new version.
 #
-# Bumps package.json, regenerates CHANGELOG.md, commits, and creates an
-# annotated tag whose message is the changelog for the new version.
+# Usage: ./release.sh v[X.Y.Z]
+#   e.g. ./release.sh v1.2.0
+#
 # Afterwards, push with: git push && git push --tags
 
 set -euo pipefail
@@ -35,10 +38,15 @@ fi
 
 echo "Preparing $tag..."
 
+# This script owns the commit and tag, so npm must not create its own.
 npm version "$version" --no-git-tag-version --allow-same-version >/dev/null
+
 npx git-cliff --config cliff.toml --tag "$tag" --output CHANGELOG.md
 
-git add package.json package-lock.json CHANGELOG.md
+git add package.json CHANGELOG.md
+if [ -f package-lock.json ]; then
+	git add package-lock.json
+fi
 git commit -m "chore(release): prepare for $tag"
 
 # The release commit itself is skipped by the cliff.toml commit parsers, so
@@ -53,4 +61,4 @@ export GIT_CLIFF_TEMPLATE="\
 changelog="$(npx git-cliff --config cliff.toml --unreleased --strip all)"
 git tag -a "$tag" -m "Release $tag" -m "$changelog"
 
-echo "Now push the commit and tag: git push && git push --tags"
+echo "Tagged $tag. Push with: git push && git push --tags"
