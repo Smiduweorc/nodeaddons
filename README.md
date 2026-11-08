@@ -15,30 +15,6 @@ Nothing here is final, so it's all just part of the learning process.
   can't be imported as ESM, it loads the binary through `createRequire()`.
 - `test/` holds the Jest suite, which exercises the built addon.
 
-## Scripts
-
-| Script | What it does |
-| --- | --- |
-| `npm run build` | Build the native addon (`node-gyp`) and compile TypeScript. |
-| `npm run build:debug` | Build the native addon with debug symbols. |
-| `npm run clean` | Remove native build output and `dist/`. |
-| `npm test` | Build, then run the Jest suite. |
-| `npm run typecheck` | Type-check without emitting. |
-| `npm run lint` / `lint:fix` | Run ESLint (optionally auto-fixing). |
-| `npm run format` | Format C/C++ sources with clang-format. |
-| `npm run docs` | Generate HTML API docs into `docs/` with TypeDoc. |
-| `npm run changelog` | Regenerate `CHANGELOG.md` from the commit history. |
-
-Commits follow [Conventional Commits](https://www.conventionalcommits.org);
-`commitlint` checks the message and [lefthook](https://lefthook.dev) runs ESLint
-and `clang-format` on staged files before each commit. Hooks install themselves
-via the `prepare` script on `npm install`.
-
-## Releasing
-
-`./release.sh v[X.Y.Z]` bumps the version in `package.json`, regenerates
-`CHANGELOG.md`, commits, and creates an annotated tag. Then
-`git push && git push --tags`.
-
-Only `dist/`, `build/Release`, `src/` and `binding.gyp` are published (the
-`"files"` allowlist in `package.json`).
+Right now the addon exports one function, `hello()`, which returns
+`"Hello from C++!"`. Building needs Node 24+ and a C++ toolchain for
+`node-gyp`. CI builds on Linux, macOS and Windows with Node 24.
